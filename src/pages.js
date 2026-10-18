@@ -33,7 +33,14 @@ const pageData = {
   '/contact/': ['Free Kitchen Spraying Quote | Contact Us','Contact Kitchen Spraying Expert for a no-obligation kitchen spraying quote in Glasgow, Ayrshire, Lanarkshire and across central Scotland.'],
   '/privacy/': ['Privacy Notice | Kitchen Spraying Expert','How Kitchen Spraying Expert handles enquiry details and contact information.']
 };
-for (const a of areas) pageData['/kitchen-spraying-' + a.slug + '/'] = ['Kitchen Spraying ' + a.name + ' | Kitchen Spraying Expert', 'Kitchen cabinet and door spraying in ' + a.name + '. Refresh your kitchen with a specialist finish and request a free, no-obligation quote.'];
+const areaMeta = {
+  glasgow: "Professional kitchen spraying in Glasgow, with doors and cabinets refinished at our Clydebank-area spray facility. Request a tailored quote.",
+  ayrshire: "Kitchen spraying across Ayrshire, including Ayr, Kilmarnock and Irvine. Refresh cabinet doors and drawer fronts and request a tailored quote.",
+  lanarkshire: "Kitchen cabinet spraying across Lanarkshire, including East Kilbride and Hamilton. Discuss door finishes, panels and refitting.",
+  edinburgh: "Explore kitchen door and cabinet spraying in Edinburgh. Check service availability, suitable finishes and quotation options.",
+  stirling: "Kitchen spraying in Stirling and surrounding areas. Discover cabinet refinishing, colour choices and tailored quotations."
+};
+for (const a of areas) pageData['/kitchen-spraying-' + a.slug + '/'] = ['Kitchen Spraying ' + a.name + ' | Kitchen Spraying Expert', areaMeta[a.slug]];
 
 function e(v) { return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function textImage(m) { return m ? '/media/' + encodeURIComponent(m.file) : FALLBACK_HERO; }
@@ -121,24 +128,144 @@ function home(media, settings) {
   const hero = textImage(media.find(x => x.featured) || media[0]);
   const title = settings.heroTitle || 'A fresh look for the heart of your home.';
   const subtitle = settings.heroSubtitle || 'Beautifully finished kitchen doors and cabinets. Expertly sprayed in Scotland, without the cost and disruption of a full replacement.';
-  return '<section class="hero editorial-hero"><img class="hero-img" src="' + e(hero) + '" alt="Contemporary kitchen with freshly styled cabinetry"><div class="wrap hero-content"><div class="hero-copy"><span class="eyebrow light">Kitchen spraying specialists · Glasgow & Scotland</span><h1>' + e(title) + '</h1><p>' + e(subtitle) + '</p><div class="hero-actions">' + btn('Get a free quote','/contact/') + btn('See how it works','/how-it-works/',true) + '</div><div class="hero-proof"><span>Based in Clydebank</span><span>Two-year workmanship guarantee</span><span>Fully insured</span></div></div></div><div class="hero-photo-caption">Professional cabinet &amp; door spraying <span aria-hidden="true">↗</span></div></section>'
+  return '<section class="hero editorial-hero"><img class="hero-img" src="' + e(hero) + '" alt="Contemporary kitchen with freshly styled cabinetry"><div class="wrap hero-content"><div class="hero-copy"><span class="eyebrow light">Kitchen spraying specialists · Glasgow & Scotland</span><h1>Professional Kitchen Spraying in Glasgow &amp; Across Scotland</h1><p class="hero-tagline">' + e(title) + '</p><p>' + e(subtitle) + '</p><div class="hero-actions">' + btn('Get a free quote','/contact/') + btn('See how it works','/how-it-works/',true) + '</div><div class="hero-proof"><span>Based in Clydebank</span><span>Two-year workmanship guarantee</span><span>Fully insured</span></div></div></div><div class="hero-photo-caption">Professional cabinet &amp; door spraying <span aria-hidden="true">↗</span></div></section>'
   + '<section class="intro-strip"><div class="wrap intro-grid"><div><span class="eyebrow">A smarter kitchen makeover</span><h2>Beautiful kitchens do not have to start over.</h2></div><div><p>If your kitchen works but its colour or finish no longer does, professional spraying can make all the difference. We give existing cabinetry the care and attention it deserves.</p>' + btn('Explore our services','/kitchen-spraying/',true) + '</div></div></section>'
   + why() + ralSection() + finishingTouches(true) + '<section class="section"><div class="wrap"><div class="section-header-row">' + sectionHead('The possibilities','Finishes worth falling for','From light, timeless cabinetry to moody contemporary shades, discover what a new colour can do.') + btn('Explore gallery','/gallery/',true) + '</div>' + photoGrid(media,6) + '</div></section>'
   + '<section class="section soft-section"><div class="wrap split align-centre"><div>' + sectionHead('From first chat to final reveal','An expert process, made simple','We combine careful preparation with specialist spray finishing at our facility near Glasgow.') + '<p>For removable components, the best finish starts away from your home. Each step is planned to keep the project straightforward and the result consistent.</p>' + btn('See the full process','/how-it-works/') + '</div><div>' + steps() + '</div></div></section>'
   + '<section class="section"><div class="wrap">' + sectionHead('Straightforward starting points','Pricing without the mystery','Guide prices from the current website. Your final quotation depends on your kitchen and any requested upgrades.') + priceCards() + '</div></section>'
   + '<section class="section areas-section"><div class="wrap split"><div>' + sectionHead('Local expertise','Proudly serving central Scotland','Based in Clydebank, we work with homeowners across Glasgow, Ayrshire, Lanarkshire, Edinburgh and Stirling.') + btn('Check your postcode','/contact/',true) + '</div><div class="area-links">' + areas.map(a=>'<a href="/kitchen-spraying-'+a.slug+'/"><span>Kitchen spraying in '+a.name+'</span><span aria-hidden="true">↗</span></a>').join('') + '</div></div></section>' + faqHtml() + cta();
 }
+const serviceCopy = {
+  general: {
+    heading: 'Professional Kitchen Spraying Services in Scotland',
+    intro: 'Transform your existing kitchen with specialist door, drawer and cabinet spraying, without replacing the layout you already love.',
+    kicker: 'The complete kitchen refresh',
+    sectionTitle: 'Kitchen spraying that makes the most of what you have',
+    lead: 'A coordinated finish across your existing kitchen can create a completely different look.',
+    description: 'We start by assessing the condition and materials of your doors, drawer fronts and other visible cabinetry. Suitable removable parts are carefully prepared and professionally sprayed at our Clydebank-area facility. Any fixed panels or trim that might need attention are discussed separately as part of your quotation.',
+    checklist: ['Assessment of suitable doors, drawer fronts and trim', 'Colour and finish choices to suit your kitchen', 'Professional preparation and off-site spraying', 'Quality checks and refitting of removable components', 'Written two-year workmanship guarantee'],
+    detailKicker: 'What makes a kitchen respray different?',
+    detailTitle: 'A new finish, not a new layout',
+    detailLead: 'Keep serviceable units, worktops and appliances where they are, unless you choose additional work.',
+    detailText: 'Kitchen spraying concentrates on the surfaces you see rather than the structure behind them. We can discuss matching colours across doors and panels and whether optional handles, worktops, sinks or taps would help complete the result.',
+    detailList: ['Ideal starting point when your kitchen layout still works', 'Scope agreed after assessing the existing surfaces', 'See our kitchen respray prices for guide costs']
+  },
+  cabinet: {
+    heading: 'Kitchen Cabinet Spraying',
+    intro: 'Give existing kitchen cupboards and cabinet fronts a considered new finish with specialist preparation, spraying and refitting.',
+    kicker: 'Cabinet refinishing specialists',
+    sectionTitle: 'Fresh colour for tired kitchen cabinets',
+    lead: 'A cabinet makeover starts with the surfaces, condition and finish of your existing units.',
+    description: 'Cabinet doors, drawer fronts, visible end panels and surrounding trim can have different surfaces and preparation needs. We assess which components are suitable for spraying, discuss edge profiles and existing finishes, and explain what will be removed for work at our spray facility. Fixed cabinetry is considered separately where appropriate.',
+    checklist: ['Suitability checks for existing cabinet materials', 'Preparation of door faces, edges and details', 'Colour and sheen choices for a coordinated result', 'Separate assessment of fixed panels and trim', 'Refitting and final checks on agreed components'],
+    detailKicker: 'Cabinet spraying explained',
+    detailTitle: 'The details matter as much as the colour',
+    detailLead: 'Door edges, drawer fronts and visible panels all affect how the finished kitchen looks.',
+    detailText: 'A clear quotation should describe exactly which cabinet parts will be refinished. Ask us about the difference between removable fronts and fixed units, any repairs that might be needed and whether new handles would suit the updated colour.',
+    detailList: ['Discuss existing cabinet material and condition', 'Confirm which faces, edges and panels are included', 'Explore suitable RAL colour references and finishes']
+  },
+  door: {
+    heading: 'Kitchen Door Spraying',
+    intro: 'Refresh kitchen doors and drawer fronts with carefully managed removal, specialist spray finishing and professional refitting.',
+    kicker: 'Kitchen doors and drawer fronts',
+    sectionTitle: 'Change the doors’ appearance, keep the kitchen you know',
+    lead: 'The colour and finish of kitchen doors can have an outsized effect on the whole room.',
+    description: 'We assess your existing door fronts and drawer fronts before agreeing the spraying scope. Suitable pieces are carefully removed, prepared and coated at our specialist facility before being returned and refitted. Profiles, handles, hinges and the condition of the current surfaces are considered during the initial discussion.',
+    checklist: ['Door and drawer-front condition assessment', 'Careful removal of suitable removable fronts', 'Preparation of faces, edges and profiles', 'Spraying, finish checks and professional refitting', 'Options to discuss replacement handles separately'],
+    detailKicker: 'Door respraying advice',
+    detailTitle: 'What about hinges, handles and drawer fronts?',
+    detailLead: 'The small components are worth considering before choosing the final colour.',
+    detailText: 'If your door shapes and layout still suit the room, respraying may be a practical alternative to buying replacements. We can discuss whether existing handles should be retained, whether new hardware would complement the finish, and which drawer fronts or matching panels should be included.',
+    detailList: ['Send photographs showing door profiles and their condition', 'Count doors and drawer fronts for a useful starting quote', 'Ask about matching handles and adjacent panels']
+  }
+};
 function genericService(type, media) {
-  const isDoor=type==='door', isCab=type==='cabinet';
-  const heading=isDoor?'Kitchen door spraying':isCab?'Kitchen cabinet spraying':'Kitchen spraying, beautifully done';
-  const intro=isDoor?'Refresh tired cabinet doors and drawer fronts with precision preparation and professional spray finishing.':isCab?'Make existing kitchen cabinets the centrepiece again with a refined finish and renewed colour.':'Your existing kitchen may have everything it needs—except a new finish. Discover an expert approach to refinishing what you already own.';
-  return banner('Our expertise',heading,intro,interiorImage(media,isDoor?2:isCab?1:0),'Spray-painted kitchen cabinet detail') + '<section class="section"><div class="wrap split align-centre"><div>' + sectionHead('Refresh rather than replace','Keep the layout. Change the feeling.','It starts with understanding your cabinetry, your preferred colour and the finish you want to achieve.') + '<p>We carefully remove suitable doors, drawer fronts and trim before finishing them at our Clydebank-area spray facility. Every project is assessed individually, and optional extras can be discussed as part of your quotation.</p>' + btn('Get a no-obligation quote','/contact/') + '</div><div class="feature-panel"><span class="eyebrow">What is included?</span><ul class="check-list"><li>Initial discussion and kitchen assessment</li><li>Careful removal of suitable components</li><li>Thorough preparation and spray application</li><li>Quality checks and professional refitting</li><li>A written two-year workmanship guarantee</li></ul></div></div></section>' + why() + '<section class="section soft-section"><div class="wrap">' + sectionHead('How it happens','Four steps to a fresh finish','A clear process from your initial enquiry to the final reveal.') + steps() + '</div></section>' + ralSection() + finishingTouches() + faqHtml() + cta();
+  const c = serviceCopy[type];
+  const index = type === 'door' ? 2 : type === 'cabinet' ? 1 : 0;
+  return banner('Our expertise', c.heading, c.intro, interiorImage(media, index), 'Spray-painted kitchen cabinet detail')
+    + '<section class="section"><div class="wrap split align-centre"><div>'
+    + sectionHead(c.kicker, c.sectionTitle, c.lead)
+    + '<p>' + e(c.description) + '</p>'
+    + btn('Get a no-obligation quote','/contact/')
+    + '</div><div class="feature-panel"><span class="eyebrow">What we consider</span><ul class="check-list">'
+    + c.checklist.map(item => '<li>' + e(item) + '</li>').join('')
+    + '</ul></div></div></section>'
+    + '<section class="section soft-section"><div class="wrap split align-centre"><div>'
+    + sectionHead(c.detailKicker, c.detailTitle, c.detailLead)
+    + '<p>' + e(c.detailText) + '</p>'
+    + btn('Explore guide prices','/kitchen-respray-cost/',true)
+    + '</div><div class="feature-panel"><span class="eyebrow">Worth knowing</span><ul class="check-list">'
+    + c.detailList.map(item => '<li>' + e(item) + '</li>').join('')
+    + '</ul></div></div></section>'
+    + why()
+    + '<section class="section soft-section"><div class="wrap">'
+    + sectionHead('How it happens','Four steps to a fresh finish','A clear process from your initial enquiry to the final reveal.')
+    + steps() + '</div></section>'
+    + ralSection() + finishingTouches() + faqHtml() + cta();
 }
 function costs(media) {return banner('An investment in your home','How much does a kitchen respray cost?','Clear starting prices for professionally sprayed kitchen doors and cabinets in Scotland.', interiorImage(media,3))+'<section class="section"><div class="wrap">'+sectionHead('Our guide prices','Your kitchen, your quote','These are advertised starting prices, not fixed quotations. The exact cost varies by door count, cabinet condition, preparation needs and selected extras.')+priceCards()+'<p class="muted note">Prices and package descriptions were carried forward from the previous website. Confirm current prices with the team before making a decision.</p></div></section><section class="section soft-section"><div class="wrap split"><div>'+sectionHead('What affects the price?','Every kitchen is a little different.','The size and condition of your existing cabinetry, the finish you choose and any optional upgrades all influence the final quotation.')+'</div><div class="feature-panel"><ul class="check-list"><li>Number and size of doors and drawers</li><li>Surface condition and preparation requirements</li><li>Choice of paint colour and finish</li><li>Additional trim and fixed cabinetry</li><li>Optional new handles, worktops, sinks or taps</li></ul></div></div></section>'+finishingTouches()+faqHtml()+cta();}
 function processPage(media) {return banner('The process','Craftsmanship at every stage','From careful removal to the final refit, here is how we transform your kitchen.', interiorImage(media,4))+'<section class="section"><div class="wrap split"><div>'+sectionHead('Behind the finish','Where the attention to detail lives','We make the process straightforward and keep you informed along the way.')+'<p>The removable parts of your kitchen travel to our specialist spray centre near Glasgow, where they are prepared and coated in controlled conditions. Suitable fixed areas and extra works are discussed during your quotation.</p>'+btn('Request your quote','/contact/')+'</div>'+steps()+'</div></section>'+why()+faqHtml()+cta();}
 function galleryPage(media) {return banner('The lookbook','Colour, finish & inspiration','A closer look at the finishes and kitchen imagery gathered for our refreshed website.', interiorImage(media,1))+'<section class="section"><div class="wrap"><p class="gallery-disclaimer">Images are labelled for inspiration unless separately confirmed as completed customer projects.</p>'+photoGrid(media,100)+'</div></section>'+cta();}
 function about(media) {return banner('About us','The detail makes the difference','A dedicated kitchen spraying team based in Clydebank and working throughout central Scotland.', interiorImage(media,5))+'<section class="section"><div class="wrap split align-centre"><div>'+sectionHead('A fresh finish, without the upheaval','The specialists behind the spray','We believe a kitchen that works should have the chance to look its best again.')+'<p>Kitchen Spraying Expert provides kitchen door and cabinet spraying, focusing on preparation, finish quality and careful refitting. We work with homeowners across Glasgow, Ayrshire, Lanarkshire and beyond.</p><p>Our specialist facility near Glasgow allows removable doors and components to be prepared and sprayed before being returned to your home.</p>'+btn('Talk to the team','/contact/')+'</div><div class="feature-panel"><span class="eyebrow">Find us</span><h3>Kitchen Spraying Expert</h3><p>Unit 6, Dunrobin Court<br>14 North Avenue<br>Clydebank<br>G81 2QP, Scotland</p><p><a href="tel:'+TEL+'">'+PHONE+'</a></p></div></div></section>'+why()+cta();}
-function areaPage(a,media) {return banner('Local kitchen transformations','Kitchen spraying in '+a.name,a.intro,interiorImage(media,areas.indexOf(a)+1))+'<section class="section"><div class="wrap split"><div>'+sectionHead('Your local kitchen refresh','Professional spraying across '+a.name,a.notes)+'<p>Instead of removing the entire kitchen, we focus on transforming suitable existing cabinet doors, drawers and finishes. You can explore a range of colours and optional upgrades to suit your home.</p>'+btn('Request a '+a.name+' quote','/contact/')+'</div><div class="feature-panel"><span class="eyebrow">A little more about our approach</span><ul class="check-list"><li>Free initial consultation and tailored quotation</li><li>Careful removal and transport of suitable doors</li><li>Specialist off-site preparation and spraying</li><li>Professional return and refitting</li><li>Two-year workmanship guarantee</li></ul></div></div></section><section class="section soft-section"><div class="wrap">'+sectionHead('From enquiry to reveal','How we transform your kitchen','A straightforward four-stage approach.')+steps()+'</div></section>'+faqHtml()+cta();}
+const localContent = {
+  glasgow: {
+    title: 'Kitchen spraying for Glasgow flats and family homes',
+    details: 'From compact city kitchens to larger family spaces, the first question is whether the existing door and drawer fronts are sound enough to refinish. We can discuss matching the new colour with visible cabinet panels and existing worktops.',
+    logistics: 'Our spray facility is in Clydebank. We will confirm collection, refitting, site access and any work on fixed components when reviewing your Glasgow postcode and kitchen photographs.',
+    checklist: ['Photograph the kitchen and any damaged door edges', 'Mention stairs, access or parking considerations', 'Ask which panels and frames are included'],
+    planningTitle: 'Planning a kitchen respray in Glasgow',
+    planningNote: 'A few photographs and your postcode help us assess the likely scope before a visit or quotation.'
+  },
+  ayrshire: {
+    title: 'Kitchen door and cabinet spraying across Ayrshire',
+    details: 'Homes in Ayr, Kilmarnock, Irvine and the wider area often have perfectly serviceable kitchen layouts that simply need a different finish. We can discuss whether spraying the doors alone gives the result you want or whether visible panels and trim should be assessed too.',
+    logistics: 'For an Ayrshire enquiry, send the postcode, approximate door and drawer count and a few clear photographs. We will confirm coverage, logistics and any collection or refitting arrangements before agreeing the job.',
+    checklist: ['Include your town and postcode', 'Count doors and drawers separately', 'Tell us if handles or worktops may also change'],
+    planningTitle: 'Preparing your Ayrshire kitchen spraying quote',
+    planningNote: 'A clear scope makes it easier to compare the cost of respraying with replacing existing fronts.'
+  },
+  lanarkshire: {
+    title: 'Cabinet refinishing for Lanarkshire kitchens',
+    details: 'Whether your kitchen is in East Kilbride, Hamilton or another Lanarkshire town, it is worth checking the condition of each door and drawer front before deciding on a colour. Existing end panels, plinths and fixed trims can also affect how consistent the final result looks.',
+    logistics: 'Let us know your Lanarkshire location and which parts of the cabinetry you would like refreshed. We will explain what can be removed for spraying and what needs a separate on-site assessment.',
+    checklist: ['Share photos of cabinet fronts and end panels', 'Mention any peeling or damaged finishes', 'Ask about matching fixed trim where suitable'],
+    planningTitle: 'Choosing the right scope for your Lanarkshire kitchen',
+    planningNote: 'Separating removable doors from fixed cabinetry helps avoid surprises in the final quotation.'
+  },
+  edinburgh: {
+    title: 'Kitchen respraying options for Edinburgh homeowners',
+    details: 'If you like the way your Edinburgh kitchen is laid out but want to change its colour, respraying may be worth considering. We begin with photographs and a discussion about the doors, drawer fronts, visible panels and the finish you are hoping to achieve.',
+    logistics: 'Availability and transport arrangements for Edinburgh are confirmed when you contact us. We will explain any access requirements, off-site spraying stages and whether additional work is appropriate for your kitchen.',
+    checklist: ['Provide the full Edinburgh postcode', 'Show cabinet profiles in close-up photographs', 'Confirm preferred colours and any access constraints'],
+    planningTitle: 'Getting an Edinburgh kitchen respray estimate',
+    planningNote: 'We will confirm service availability and a practical plan before making commitments about collection or refitting.'
+  },
+  stirling: {
+    title: 'Kitchen door spraying and refinishing in Stirling',
+    details: 'A fresh finish can modernise a Stirling kitchen without moving plumbing, appliances or sound existing units. We can assess whether the door fronts and drawer fronts are suitable for spraying and discuss a coordinated colour for visible panels.',
+    logistics: 'When enquiring from Stirling or the surrounding area, include your postcode and photographs of the existing finish. We will check the proposed scope and confirm whether off-site spraying and refitting arrangements are suitable.',
+    checklist: ['Show the current finish and door profiles', 'Include your postcode for a coverage check', 'Consider whether new handles would complement the colour'],
+    planningTitle: 'Plan your Stirling kitchen makeover',
+    planningNote: 'Understanding the surfaces and desired finish is the best starting point for a useful quote.'
+  }
+};
+function areaPage(a,media) {
+  const local = localContent[a.slug];
+  return banner('Local kitchen transformations','Kitchen spraying in ' + a.name,a.intro,interiorImage(media,areas.indexOf(a)+1))
+    + '<section class="section"><div class="wrap split"><div>'
+    + sectionHead('Your local kitchen refresh', local.title, a.notes)
+    + '<p>' + e(local.details) + '</p><p>' + e(local.logistics) + '</p>'
+    + btn('Request a ' + a.name + ' quote','/contact/')
+    + '</div><div class="feature-panel"><span class="eyebrow">Before requesting a quote</span><ul class="check-list">'
+    + local.checklist.map(item => '<li>' + e(item) + '</li>').join('')
+    + '</ul><p>We assess each project individually and confirm suitability, scope and pricing before work begins.</p></div></div></section>'
+    + '<section class="section soft-section"><div class="wrap">'
+    + sectionHead('From enquiry to reveal', local.planningTitle, local.planningNote)
+    + steps()
+    + '<p class="muted note">Need a starting point? See our <a href="/kitchen-respray-cost/">kitchen respray pricing guide</a> or explore <a href="/kitchen-cabinet-spraying/">cabinet spraying</a>.</p>'
+    + '</div></section>'
+    + faqHtml() + cta();
+}
 
 function ralContactField(query) {
   const initial = typeof query.ral==='string' && /^RAL [0-9]{4}$/i.test(query.ral) ? query.ral.toUpperCase() : '';
