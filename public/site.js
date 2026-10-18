@@ -93,6 +93,7 @@ for (const field of document.querySelectorAll('.ral-form-field')) {
     const match=palette.get(code);
     chip.classList.toggle('has-shade',!!match);
     chip.style.backgroundColor=match ? match.hex : '';
+    chip.style.backgroundImage=match ? 'none' : '';
     // Reset the coloured background when a user clears an existing selection.
     if(!match)chip.style.removeProperty('background-color');
     caption.textContent=match ? match.name : (code ? 'Shade not previewed' : 'No shade selected');

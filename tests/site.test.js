@@ -152,7 +152,7 @@ test('finishing touch tiles are valid HTML with exactly three independent clicka
   assert.match(html, /<div class="finishing-choices">/);
   assert.doesNotMatch(html, /<div class="finishing-choices>/);
   const $=load(html);
-  const grid=$('.quote-form fieldset.finishing-fieldset .finishing-choices');
+  const grid=$('.quote-form section.finishing-fieldset .finishing-choices');
   assert.equal(grid.length, 1, 'One valid finishing-touches grid');
   const tiles=grid.children('label.finishing-choice-tile');
   assert.equal(tiles.length, 3, 'All tiles are direct children of the grid');
@@ -197,4 +197,24 @@ test('optional extras fieldset explanation stays concise and markup intact', () 
   const $=load(html);
   assert.equal($('.quote-form .finishing-fieldset > p').text(), 'Select any extras to discuss. Quoted separately.');
   assert.equal($('.quote-form .finishing-choices > label.finishing-choice-tile').length, 3);
+});
+
+
+test('extras heading and note are inside a labelled container', () => {
+  const $=load(render('/contact/', [], {}, {}, true, ''));
+  const group=$('.quote-form section.finishing-fieldset');
+  assert.equal(group.length,1);
+  assert.equal(group.attr('aria-labelledby'),'finishing-title');
+  assert.equal(group.children('.finishing-heading').find('#finishing-title').text(),'Interested in any finishing touches?');
+  assert.equal(group.children('.finishing-intro').text(),'Select any extras to discuss. Quoted separately.');
+  assert.equal(group.children('.finishing-choices').children('label.finishing-choice-tile').length,3);
+});
+test('RAL paint preview shows a solid chosen colour instead of the checkerboard image', () => {
+  const styles=fs.readFileSync(new URL('../public/site.css', import.meta.url), 'utf8');
+  assert.match(styles,/\.ral-form-paint\.has-shade\s*\{\s*background-image:none;/);
+  const $=load(render('/contact/', [], {ral:'RAL 7032'}, {}, true, ''));
+  const paint=$('[data-ral-form-paint]');
+  assert.equal(paint.hasClass('has-shade'),true);
+  assert.equal(paint.attr('style'),'background-color:#B2B3A5');
+  assert.equal($('[data-ral-form-name]').text(),'Pebble grey');
 });

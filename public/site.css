@@ -539,3 +539,79 @@
   .ral-form-row input{min-height:51px}
   .ral-form-preview{max-width:100%;min-height:65px}
 }
+
+
+/* Quote-form finishing options: headings and explanatory text live inside the panel.
+   Native fieldset/legend positioning had placed copy above the card boundary. */
+.contact-form-panel{box-sizing:border-box;min-width:0;max-width:100%}
+.quote-form .finishing-fieldset{
+  display:block;
+  min-width:0;
+  max-width:100%;
+  width:100%;
+  box-sizing:border-box;
+  margin:0;
+  padding:24px;
+  border:1px solid #ccd7ca;
+  border-radius:10px;
+  background:#f8faf6;
+  container-type:inline-size;
+}
+.quote-form .finishing-heading{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:flex-start;
+  gap:8px 12px;
+  max-width:100%;
+  min-width:0;
+  margin:0 0 10px;
+}
+.quote-form .finishing-heading h3{
+  min-width:0;
+  max-width:100%;
+  font-size:clamp(15px,1.45vw,18px);
+  font-weight:800;
+  line-height:1.38;
+  letter-spacing:-.015em;
+  margin:0;
+  overflow-wrap:break-word;
+}
+.quote-form .finishing-optional{
+  display:inline-flex;
+  flex:none;
+  align-items:center;
+  padding:4px 9px;
+  border-radius:999px;
+  color:#804d59;
+  background:#f3e7e9;
+  font-weight:700;
+  font-size:11px;
+  line-height:1.4;
+}
+.quote-form .finishing-fieldset > p.finishing-intro{
+  display:block;
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  margin:0 0 17px;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  font-size:13px;
+  line-height:1.6;
+  color:#67766a;
+}
+@container (min-width:421px) and (max-width:620px){
+  .quote-form .finishing-choices > label.finishing-choice-tile:last-child:nth-child(odd){
+    grid-column:1 / -1;
+  }
+}
+@media (max-width:600px){
+  .quote-form .finishing-fieldset{padding:19px 15px}
+  .quote-form .finishing-heading h3{font-size:16px}
+}
+/* The selected paint must cover the checkerboard background IMAGE as well as its colour. */
+.ral-form-paint.has-shade{
+  background-image:none;
+  background-repeat:no-repeat;
+}
