@@ -73,3 +73,34 @@ for (const board of document.querySelectorAll('[data-ral-board]')) {
     });
   }
 }
+
+
+// Preferred RAL colour: show the selected shade beside the enquiry input.
+// The data comes from the same illustrative swatches as the public RAL explorer.
+for (const field of document.querySelectorAll('.ral-form-field')) {
+  const input=field.querySelector('[data-ral-form-input]');
+  const chip=field.querySelector('[data-ral-form-paint]');
+  const caption=field.querySelector('[data-ral-form-name]');
+  const preview=field.querySelector('[data-ral-form-preview]');
+  if(!input||!chip||!caption||!preview)continue;
+  const options=[...field.querySelectorAll('datalist option[data-ral-swatch]')];
+  const palette=new Map(options.map(option=>[
+    option.value.toUpperCase(),
+    {hex:option.dataset.ralSwatch,name:option.dataset.ralName}
+  ]));
+  const updatePreview=()=>{
+    const code=input.value.toUpperCase().trim().replace(/\s+/g,' ');
+    const match=palette.get(code);
+    chip.classList.toggle('has-shade',!!match);
+    chip.style.backgroundColor=match ? match.hex : '';
+    // Reset the coloured background when a user clears an existing selection.
+    if(!match)chip.style.removeProperty('background-color');
+    caption.textContent=match ? match.name : (code ? 'Shade not previewed' : 'No shade selected');
+    preview.setAttribute('aria-label',match
+      ? code+' '+match.name+' - illustrative colour only'
+      : (code ? 'No digital preview for '+code : 'No RAL colour selected'));
+  };
+  input.addEventListener('input',updatePreview);
+  input.addEventListener('change',updatePreview);
+  updatePreview();
+}
