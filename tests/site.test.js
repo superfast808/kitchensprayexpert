@@ -238,3 +238,66 @@ test('local service landing pages use clear geographic H1s and matching LocalBus
     assert.match(business.address.streetAddress,/14 North Avenue/);
   }
 });
+
+
+test('every public page has exactly one useful H1 inside the main content', () => {
+  for (const slug of slugs) {
+    const $ = load(render(slug, [], {}, {}, false, ''));
+    const headings = $('h1');
+    assert.equal(headings.length, 1, 'Exactly one H1 on ' + slug);
+    assert.equal($('main h1').length, 1, 'H1 is in main content on ' + slug);
+    assert.ok(headings.first().text().trim().length >= 12, 'H1 is descriptive on ' + slug);
+  }
+});
+
+test('homepage SEO H1 remains stable when the marketing tagline is edited', () => {
+  for (const heroTitle of ['', 'A fresh look for the heart of your home.', 'A completely bespoke tagline']) {
+    const $ = load(render('/', [], {}, {heroTitle}, false, ''));
+    assert.equal($('.editorial-hero h1').text().trim(), 'Professional Kitchen Spraying in Glasgow & Across Scotland');
+    assert.equal($('.editorial-hero .hero-tagline').text().trim(), heroTitle || 'A fresh look for the heart of your home.');
+    assert.equal($('h1').length, 1);
+  }
+});
+
+test('core service pages use distinct H1s, advice and page sections', () => {
+  const data = [
+    ['/kitchen-spraying/', 'Professional Kitchen Spraying Services in Scotland', 'Kitchen spraying that makes the most of what you have', 'A new finish, not a new layout'],
+    ['/kitchen-cabinet-spraying/', 'Kitchen Cabinet Spraying', 'Fresh colour for tired kitchen cabinets', 'The details matter as much as the colour'],
+    ['/kitchen-door-spraying/', 'Kitchen Door Spraying', 'Change the doors’ appearance, keep the kitchen you know', 'What about hinges, handles and drawer fronts?']
+  ];
+  const descriptions = new Set();
+  for (const [slug, h1, section, detail] of data) {
+    const $ = load(render(slug, [], {}, {}, false, ''));
+    assert.equal($('main h1').text().trim(), h1, 'Correct service H1: ' + slug);
+    const heads = $('main h2').map((_, element) => $(element).text().trim()).get();
+    assert.ok(heads.includes(section), 'Unique service explanation on ' + slug);
+    assert.ok(heads.includes(detail), 'Unique practical section on ' + slug);
+    const desc = $('main .section .split').first().find('p').map((_, p) => $(p).text().trim()).get().join(' ');
+    assert.ok(desc.length > 140, 'Useful service description on ' + slug);
+    assert.ok(!descriptions.has(desc), 'Service descriptions must not repeat');
+    descriptions.add(desc);
+  }
+});
+
+test('location pages include localised guidance without fabricated project claims', () => {
+  const areas = [
+    ['glasgow', 'Glasgow', 'Planning a kitchen respray in Glasgow'],
+    ['ayrshire', 'Ayrshire', 'Preparing your Ayrshire kitchen spraying quote'],
+    ['lanarkshire', 'Lanarkshire', 'Choosing the right scope for your Lanarkshire kitchen'],
+    ['edinburgh', 'Edinburgh', 'Getting an Edinburgh kitchen respray estimate'],
+    ['stirling', 'Stirling', 'Plan your Stirling kitchen makeover']
+  ];
+  const pageDescriptions = new Set();
+  for (const [slug, name, planning] of areas) {
+    const html = render('/kitchen-spraying-' + slug + '/', [], {}, {}, false, '');
+    const $ = load(html);
+    assert.equal($('main h1').text().trim(), 'Kitchen spraying in ' + name);
+    assert.ok($('main h2').map((_, h) => $(h).text().trim()).get().includes(planning));
+    assert.equal($('main .feature-panel .check-list li').length, 3, 'Helpful local quote checklist: ' + slug);
+    assert.ok($('main a[href="/kitchen-respray-cost/"]').length, 'Links to published price guide: ' + slug);
+    const meta = $('meta[name="description"]').attr('content');
+    assert.ok(meta && meta.includes(name), 'Local meta description: ' + slug);
+    assert.ok(!pageDescriptions.has(meta), 'Each local page has unique meta copy');
+    pageDescriptions.add(meta);
+  }
+});
