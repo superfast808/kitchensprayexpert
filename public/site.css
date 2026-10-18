@@ -136,3 +136,33 @@
   .gallery-empty-image{width:100%;height:180px}
   .logo-setting-grid{grid-template-columns:1fr}
 }
+
+
+/* Optional finishing touches – warm accents without displacing the core spraying offer */
+.finishing-touches .eyebrow{color:#905562}
+.finishing-head{display:flex;align-items:flex-end;justify-content:space-between;gap:35px;margin-bottom:37px}
+.finishing-head>div{max-width:700px}
+.finishing-head h2{margin:0 0 14px}
+.finishing-head p{font-size:16px;line-height:1.85;margin:0}
+.finishing-head>.btn{flex:none}
+.finishing-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+.finishing-card{padding:33px 29px 28px;background:#fffefa;border:1px solid #e0e4da;border-top:3px solid #945662;border-radius:10px;display:flex;flex-direction:column;min-height:333px;box-shadow:0 13px 35px #203b260b;transition:transform .2s,box-shadow .2s}
+.finishing-card:hover{transform:translateY(-3px);box-shadow:0 20px 40px #203b2618}
+.finishing-number{color:#9c6371;letter-spacing:.15em;font-size:12px;font-weight:800;margin-bottom:29px}
+.finishing-card h3{font-size:23px;color:#263a2b;margin-bottom:13px}
+.finishing-card p{font-size:14px;line-height:1.7;margin:0 0 12px}
+.finishing-card .finishing-detail{color:#718073;font-size:13px}
+.finishing-card a{display:flex;align-items:center;justify-content:space-between;color:#814957;font-weight:800;font-size:13px;border-top:1px solid #ecdfe1;padding-top:15px;margin-top:auto}
+.finishing-card a span{transition:transform .2s}
+.finishing-card a:hover span{transform:translate(3px,-3px)}
+.finishing-small{color:#627263;font-size:12px;margin:25px 0 0;padding:8px 0 8px 17px;border-left:3px solid #b18b95;line-height:1.65}
+.finishing-fieldset{border:1px solid #cdd9cd;background:#f8faf6;padding:19px 18px 20px;margin:0;border-radius:9px}
+.finishing-fieldset legend{font-size:14px;font-weight:800;padding:0 8px;color:#29412f}
+.finishing-fieldset legend span{font-weight:500;color:#748072}
+.finishing-fieldset>p{font-size:12px;margin:0 0 12px}
+.finishing-choices{display:flex;flex-wrap:wrap;gap:10px}
+.finishing-choices .finishing-choice{display:flex;flex-direction:row;align-items:center;gap:8px;padding:11px 12px;background:#fff;border:1px solid #d6ded2;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer}
+.finishing-choice input{accent-color:#905562;min-width:17px;min-height:17px;margin:0}
+.finishing-choice:has(input:checked){border-color:#ae7b88;background:#f9eeee}
+@media(max-width:900px){.finishing-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.finishing-card:last-child{grid-column:span 2}.finishing-head{flex-direction:column;align-items:flex-start}}
+@media(max-width:600px){.finishing-grid{grid-template-columns:1fr}.finishing-card:last-child{grid-column:auto}.finishing-card{min-height:295px;padding:24px}.finishing-number{margin-bottom:18px}.finishing-choices{flex-direction:column}.finishing-choices .finishing-choice{width:100%}}
