@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { load } from 'cheerio';
 import { render, slugs } from '../src/pages.js';
 
 const opts = [[], {}, {}, true, ''];
@@ -143,4 +144,26 @@ test('home hero remains in a solid text panel, with guarded desktop and laptop C
   assert.match(styles, /@media\(max-width:1100px\)\s*\{[\s\S]*?\.hero\.editorial-hero\s*\{\s*display:flex;\s*flex-direction:column;/);
   assert.match(styles, /\.editorial-hero \.hero-copy\s*\{[\s\S]*?flex:0 0 47%;\s*width:47%;/);
   assert.match(render('/', ...opts), /class="hero-copy"/);
+});
+
+
+test('finishing touch tiles are valid HTML with exactly three independent clickable choices', () => {
+  const html=render('/contact/', [], {interest:'handles'}, {}, true, '');
+  assert.match(html, /<div class="finishing-choices">/);
+  assert.doesNotMatch(html, /<div class="finishing-choices>/);
+  const $=load(html);
+  const grid=$('.quote-form fieldset.finishing-fieldset .finishing-choices');
+  assert.equal(grid.length, 1, 'One valid finishing-touches grid');
+  const tiles=grid.children('label.finishing-choice-tile');
+  assert.equal(tiles.length, 3, 'All tiles are direct children of the grid');
+  const expected=['handles','worktops','sinks-taps'];
+  tiles.each((index, element) => {
+    const tile=$(element);
+    assert.equal(tile.children('input[type="checkbox"][name="upgrades"]').val(), expected[index]);
+    assert.equal(tile.children('.tile-check').length, 1);
+    assert.equal(tile.children('.tile-words').length, 1);
+    assert.ok(tile.find('.tile-words strong').text().trim());
+    assert.ok(tile.find('.tile-words small').text().trim());
+  });
+  assert.equal(tiles.first().children('input').attr('checked'), 'checked');
 });
