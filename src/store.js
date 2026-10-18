@@ -58,3 +58,11 @@ export function saveSettings(newSettings) {
   for (const key of allowed) if (typeof newSettings[key] === 'string') db.settings[key] = newSettings[key].trim().slice(0, 500);
   persist();
 }
+
+export function deleteLead(id) {
+  const before = db.leads.length;
+  db.leads = db.leads.filter(x => x.id !== id);
+  if (db.leads.length === before) return false;
+  persist();
+  return true;
+}
