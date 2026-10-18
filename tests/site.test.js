@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import { render, slugs } from '../src/pages.js';
 
 const opts = [[], {}, {}, true, ''];
@@ -131,4 +132,15 @@ test('hero uses a crisp photo beside copy rather than an overlay', () => {
   assert.match(html,/class="hero editorial-hero"/);
   assert.match(html,/class="hero-copy"/);
   assert.doesNotMatch(html,/class="hero-overlay"/);
+});
+
+
+test('home hero remains in a solid text panel, with guarded desktop and laptop CSS breakpoints', () => {
+  const styles = fs.readFileSync(new URL('../public/site.css', import.meta.url), 'utf8');
+  assert.equal((styles.match(/@import url\(/g) || []).length, 1,
+    'Duplicated base stylesheet must not reappear');
+  assert.match(styles, /@media\(min-width:1101px\)\s*\{[\s\S]*?\.editorial-hero \.hero-content\s*\{\s*display:flex;\s*flex-direction:row;/);
+  assert.match(styles, /@media\(max-width:1100px\)\s*\{[\s\S]*?\.hero\.editorial-hero\s*\{\s*display:flex;\s*flex-direction:column;/);
+  assert.match(styles, /\.editorial-hero \.hero-copy\s*\{[\s\S]*?flex:0 0 47%;\s*width:47%;/);
+  assert.match(render('/', ...opts), /class="hero-copy"/);
 });
