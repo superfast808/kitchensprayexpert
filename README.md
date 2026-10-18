@@ -1,6 +1,6 @@
 # Kitchen Spraying Expert
 
-Fresh, mobile-first, SEO-oriented replacement for kitchensprayexpert.co.uk, designed for Plesk + Docker on port **8105**. Existing live site remains untouched until cutover.
+Fresh, mobile-first, SEO-oriented replacement for kitchensprayexpert.co.uk, designed for Plesk + Docker on port **8106**. Existing live site remains untouched until cutover.
 
 ## Included
 
@@ -58,9 +58,9 @@ Required admin values: ADMIN_PASSWORD (strong, unique); SESSION_SECRET (paste th
     docker compose up -d --build
     docker compose ps
     docker compose logs --tail=60
-    curl -I http://127.0.0.1:8105
+    curl -I http://127.0.0.1:8106
 
-6. Configure a dedicated Plesk test host, for example **kitchenspray.toastercabs.co.uk**, with HTTPS and reverse proxy pointing to http://127.0.0.1:8105. The service binds to the host loopback, so it is not accessible through port 8105 directly. Do not replace another toastercabs service.
+6. Configure a dedicated Plesk test host, for example **kitchenspray.toastercabs.co.uk**, with HTTPS and reverse proxy pointing to http://127.0.0.1:8106. The service binds to the host loopback, so it is not accessible through port 8106 directly. Do not replace another toastercabs service.
 
 7. Sign in at https://kitchenspray.toastercabs.co.uk/admin/login/, choose **Import old website images** and refresh the dashboard to view status. The importer is designed to work before the old site is switched off. Re-run if required; pictures are stored in /opt/kitchensprayexpert/data/uploads. Choose an imported picture as the home hero, and edit its alt description.
 

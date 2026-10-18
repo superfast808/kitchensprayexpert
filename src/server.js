@@ -10,7 +10,7 @@ import { dataDir, uploadsDir, media, leads, addLead, deleteLead, addMedia, updat
 import { render, slugs } from './pages.js';
 
 const app = express();
-const port = Number(process.env.PORT || 8105);
+const port = Number(process.env.PORT || 8106);
 const preview = process.env.PREVIEW_MODE !== 'false';
 const secret = process.env.SESSION_SECRET || '';
 const adminPassword = process.env.ADMIN_PASSWORD || '';
