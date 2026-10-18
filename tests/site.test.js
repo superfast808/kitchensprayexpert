@@ -167,3 +167,34 @@ test('finishing touch tiles are valid HTML with exactly three independent clicka
   });
   assert.notEqual(tiles.first().children('input').attr('checked'), undefined);
 });
+
+
+test('business structured data links the verified Clydebank Google Business Profile', () => {
+  const expected='ChIJR2WVf9NPiEgRr7OCATM9DlI';
+  for (const pathname of ['/', '/about/', '/contact/']) {
+    const html=render(pathname, ...opts);
+    const graph=JSON.parse(html.match(/<script type="application\/ld\+json">([^<]+)<\/script>/)[1])['@graph'];
+    const business=graph.find(x=>x['@type']==='HomeAndConstructionBusiness');
+    assert.ok(business, 'Business schema is present for '+pathname);
+    assert.ok(business.sameAs.some(x=>x.includes('query_place_id='+expected)), 'Exact Google Place ID is in sameAs');
+    assert.equal(business.hasMap, business.sameAs[0]);
+    assert.equal(business.address.postalCode, 'G81 2QP');
+  }
+});
+test('RAL field includes digital swatch preview and current colour is prefilled', () => {
+  const html=render('/contact/', [], {ral:'RAL 3011'}, {}, true, '');
+  const $=load(html);
+  const field=$('.quote-form .ral-form-field');
+  assert.equal(field.length, 1);
+  assert.equal(field.find('input[name="ralColour"]').val(), 'RAL 3011');
+  assert.equal(field.find('[data-ral-form-paint]').attr('style'), 'background-color:#853C3C');
+  assert.equal(field.find('[data-ral-form-name]').text(), 'Brown red');
+  assert.equal(field.find('option[data-ral-swatch]').length, 18);
+  assert.match(field.find('.ral-form-hint').text(), /physical colour sample/);
+});
+test('optional extras fieldset explanation stays concise and markup intact', () => {
+  const html=render('/contact/', [], {}, {}, true, '');
+  const $=load(html);
+  assert.equal($('.quote-form .finishing-fieldset > p').text(), 'Select any extras to discuss. Quoted separately.');
+  assert.equal($('.quote-form .finishing-choices > label.finishing-choice-tile').length, 3);
+});

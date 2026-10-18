@@ -121,3 +121,7 @@ The enquiry form accepts any combination of these optional extras. Selection is 
 - The extras checkboxes are now large selectable tiles with native accessible controls and clear selected states.
 - Home and interior heroes use discrete solid-colour copy panels and unobscured photographs instead of image gradients.
 - Individual arrows are removed from descriptive dropdown links; the top-level menu chevrons remain.
+
+## Google Business Profile structured data
+
+The site includes an exact `sameAs` and `hasMap` link for Kitchen Spraying Expert's Google Business Profile at **14 North Avenue, Clydebank G81 2QP**, using Google Place ID `ChIJR2WVf9NPiEgRr7OCATM9DlI`. This is the kitchen-spraying business listing (not the separate King Specialist Coatings listing). The schema address includes Unit 6, Dunrobin Court, 14 North Avenue, Clydebank, G81 2QP. Verify business details against the managed profile whenever they change. The quote form's RAL field now shows an illustrative matching colour swatch, and the optional-extras subtitle is constrained to the form width.
