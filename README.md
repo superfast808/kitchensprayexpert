@@ -110,3 +110,14 @@ Enter and confirm a new password at the masked prompts. The new password takes e
 The homepage, kitchen spraying services and price pages now feature a 'Complete the look' section. The Services navigation links to the dedicated SEO page `/kitchen-upgrades/`. It discusses optional handles and hardware, worktops, and sinks/taps only in connection with kitchen spraying. Extras are **not included in published spraying guide prices** and require confirmation of suitability, availability, separate quotation and fitting arrangements.
 
 The enquiry form accepts any combination of these optional extras. Selection is persisted with the enquiry, displayed in admin and sent in the configured SMTP notification. The link from each add-on card preselects the corresponding checkbox on the quotation form.
+
+
+## Colour explorer and sharper heroes
+
+- The home page and kitchen spraying service pages now include a RAL Classic inspiration chart.
+- A full RAL chart is available at /ral-colours/, with 18 named illustrative swatches and selectable colour families. It is included in the sitemap and navigation.
+- Each selected shade updates a cabinet preview and links to the contact page with that RAL code prefilled. The code is stored with the enquiry, included in admin and SMTP notifications.
+- Swatches are illustrative screen colours rather than official RAL matches. Confirm physical samples, intended finish and actual availability before making claims.
+- The extras checkboxes are now large selectable tiles with native accessible controls and clear selected states.
+- Home and interior heroes use discrete solid-colour copy panels and unobscured photographs instead of image gradients.
+- Individual arrows are removed from descriptive dropdown links; the top-level menu chevrons remain.

@@ -92,3 +92,43 @@ test('optional extras are selectable in enquiry form', () => {
   assert.match(h, /name="upgrades" value="handles"/);
   assert.match(h, /name="upgrades" value="sinks-taps"/);
 });
+
+
+test('RAL chart has clickable colour families, shade codes and caveats', () => {
+  const html=render('/ral-colours/', [], {}, {}, true, '');
+  assert.match(html,/data-ral-board/);
+  assert.match(html,/data-ral-shade="RAL 6011"/);
+  assert.match(html,/data-ral-shade="RAL 3005"/);
+  assert.match(html,/data-ral-filter="Neutrals"/);
+  assert.match(html,/approximate digital/);
+  assert.match(html,/RAL gGmbH/);
+});
+test('RAL colour inspiration appears on home and core service pages', () => {
+  for(const slug of ['/','/kitchen-spraying/','/kitchen-cabinet-spraying/','/kitchen-door-spraying/']){
+    const html=render(slug,[],{}, {},true,'');
+    assert.match(html,/data-ral-board/);
+    assert.match(html,/\/ral-colours\//);
+  }
+});
+test('quote form supports prefilled RAL code and large optional extras tiles', () => {
+  const html=render('/contact/',[],{ral:'RAL 6011',interest:'handles'}, {},true,'');
+  assert.match(html,/name="ralColour" maxlength="40"[^>]*value="RAL 6011"/);
+  assert.match(html,/class="finishing-choice-tile"/);
+  assert.match(html,/name="upgrades" value="handles" checked/);
+  assert.match(html,/name="upgrades" value="worktops"/);
+  assert.match(html,/class="tile-check"/);
+});
+test('dropdown links do not have redundant icons, only top-level chevrons', () => {
+  const html=render('/', ...opts);
+  const links=html.match(/<a class="dropdown-card"[^>]*>[\s\S]*?<\/a>/g)||[];
+  assert.ok(links.length>=5);
+  for(const link of links)assert.doesNotMatch(link,/link-arrow-icon/);
+  assert.match(html,/class="nav-chevron"/);
+  assert.match(html,/An expert makeover for existing cabinetry/);
+});
+test('hero uses a crisp photo beside copy rather than an overlay', () => {
+  const html=render('/', ...opts);
+  assert.match(html,/class="hero editorial-hero"/);
+  assert.match(html,/class="hero-copy"/);
+  assert.doesNotMatch(html,/class="hero-overlay"/);
+});
