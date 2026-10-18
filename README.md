@@ -71,6 +71,19 @@ Required admin values: ADMIN_PASSWORD (strong, unique); SESSION_SECRET (paste th
     docker compose up -d --build
     docker compose logs --tail=60
 
+## SEO heading and indexing checks
+
+The homepage has one fixed, keyword-focused H1: **Professional Kitchen Spraying in Glasgow & Across Scotland**. The original marketing line remains editable in admin as the supporting tagline, so changing it will not accidentally replace the SEO heading. Core service and geographic landing pages have individual content and descriptions.
+
+GitHub Actions runs `npm run check` and `npm test` on new commits, including H1 and location-page regression tests.
+
+After deploying to the **live domain**, verify the response headers, meta robots, H1 tags, canonicals, robots.txt and sitemap.xml from within the running container:
+
+    cd /opt/kitchensprayexpert
+    docker compose exec web npm run check:live-seo
+
+A failure reporting `noindex` or blocked crawling indicates that the live instance may still have `PREVIEW_MODE=true` in the **server's private .env**. Change it to `false` only on the production installation, then recreate the container using `docker compose up -d --build`. Keep it `true` on staging/test environments.
+
 ## Live switch
 
 - Confirm contact details, pricing, guarantees and genuine project imagery.
