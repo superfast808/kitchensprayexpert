@@ -169,7 +169,7 @@ function logoMarkup(siteSettings, forFooter=false) {
   return '<span class="brand-words wordmark-fallback">KITCHEN <b>SPRAYING</b><small>EXPERT</small></span>';
 }
 function navCard(href, heading, details) {
-  return '<a class="dropdown-card" href="'+e(href)+'"><span class="dropdown-card-copy"><strong>'+e(heading)+'</strong><small>'+e(details)+'</small></span>'+arrowIcon()+'</a>';
+  return '<a class="dropdown-card" href="'+e(href)+'"><span class="dropdown-card-copy"><strong>'+e(heading)+'</strong><small>'+e(details)+'</small></span></a>';
 }
 function navGroup(id, heading, href, description, links, active) {
   return '<div class="nav-group" data-nav-group><div class="nav-group-toggle"><a href="'+e(href)+'" class="nav-group-main '+(active?'current':'')+'">'+e(heading)+'</a><button type="button" class="nav-chevron" aria-expanded="false" aria-controls="nav-'+id+'" aria-label="Toggle '+e(heading)+' links"><span class="chevron-shape"></span></button></div>'+
