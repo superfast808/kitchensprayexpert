@@ -104,3 +104,9 @@ If the admin password from .env is rejected, Docker Compose may have interpolate
     docker compose exec -it web node scripts/reset-admin-password.js
 
 Enter and confirm a new password at the masked prompts. The new password takes effect immediately and existing sessions are invalidated. Do not copy passwords into terminal command-line arguments or logs. SESSION_SECRET must still be populated in .env. You do not need to change ADMIN_PASSWORD in .env after using this tool; the stored hash takes precedence.
+
+## Optional finishing touches and add-ons
+
+The homepage, kitchen spraying services and price pages now feature a 'Complete the look' section. The Services navigation links to the dedicated SEO page `/kitchen-upgrades/`. It discusses optional handles and hardware, worktops, and sinks/taps only in connection with kitchen spraying. Extras are **not included in published spraying guide prices** and require confirmation of suitability, availability, separate quotation and fitting arrangements.
+
+The enquiry form accepts any combination of these optional extras. Selection is persisted with the enquiry, displayed in admin and sent in the configured SMTP notification. The link from each add-on card preselects the corresponding checkbox on the quotation form.

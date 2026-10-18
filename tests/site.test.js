@@ -67,3 +67,28 @@ test('interior pages use kitchen photography and retain clear hero copy', () => 
   }
   assert.match(render('/contact/', [], {}, {}, true,''), /id="quote-form"/);
 });
+
+
+test('finishing touches are easy to find and are separately quoted', () => {
+  const home=render('/', ...opts);
+  assert.match(home, /Complete the look/);
+  assert.match(home, /Handles &amp; hardware/);
+  assert.match(home, /Worktops/);
+  assert.match(home, /Sinks &amp; taps/);
+  assert.match(home, /\/kitchen-upgrades\//);
+  assert.match(render('/kitchen-spraying/', ...opts), /finishing-touches/);
+  assert.match(render('/kitchen-respray-cost/', ...opts), /not included in the published spraying guide prices/);
+});
+test('finishing touches landing page has individual quote links and metadata', () => {
+  const html=render('/kitchen-upgrades/', ...opts);
+  assert.match(html, /Optional Kitchen Upgrades &amp; Finishing Touches/);
+  assert.match(html, /interest=handles#quote-form/);
+  assert.match(html, /interest=worktops#quote-form/);
+  assert.match(html, /interest=sinks-taps#quote-form/);
+});
+test('optional extras are selectable in enquiry form', () => {
+  const h=render('/contact/', [], {interest:'worktops'}, {}, true, '');
+  assert.match(h, /name="upgrades" value="worktops" checked/);
+  assert.match(h, /name="upgrades" value="handles"/);
+  assert.match(h, /name="upgrades" value="sinks-taps"/);
+});
