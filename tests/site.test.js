@@ -218,3 +218,23 @@ test('RAL paint preview shows a solid chosen colour instead of the checkerboard 
   assert.equal(paint.attr('style'),'background-color:#B2B3A5');
   assert.equal($('[data-ral-form-name]').text(),'Pebble grey');
 });
+
+
+test('local service landing pages use clear geographic H1s and matching LocalBusiness NAP', () => {
+  for (const area of ['Glasgow','Ayrshire','Lanarkshire','Edinburgh','Stirling']) {
+    const slug='/kitchen-spraying-'+area.toLowerCase()+'/';
+    const html=render(slug, ...opts);
+    const $=load(html);
+    assert.equal($('h1').length,1);
+    assert.equal($('h1').text(), 'Kitchen spraying in '+area);
+  }
+  for (const slug of ['/','/about/','/contact/']) {
+    const html=render(slug, ...opts);
+    assert.match(html,/14 North Avenue/);
+    assert.match(html,/G81 2QP/);
+    const data=JSON.parse(html.match(/<script type="application\/ld\+json">([^<]+)<\/script>/)[1]);
+    const business=data['@graph'].find(v=>v['@type']==='HomeAndConstructionBusiness');
+    assert.equal(business.address.postalCode, 'G81 2QP');
+    assert.match(business.address.streetAddress,/14 North Avenue/);
+  }
+});
