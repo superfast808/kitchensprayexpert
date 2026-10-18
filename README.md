@@ -87,3 +87,20 @@ The media importer uses the OLD SITE as its source. Complete media migration **b
 ### Search Console verification
 
 In admin → Website content, enter your Google HTML verification filename (for example google123abc.html), save, then Google can fetch the expected verification content at the corresponding URL. This does not replace DNS verification, which may be preferable for the entire domain.
+
+
+## Navigation, logo management and admin password reset
+
+Navigation includes descriptive Services and Areas dropdowns with aligned chevrons, keyboard/click controls, and mobile accordions. Interior landing pages use photographic, split-layout heroes. When media is imported and verified, those pages favour local WebP imagery.
+
+In /admin/, open Company logo to upload a transparent PNG/JPEG/WebP header logo and (optionally) a separate light-coloured footer logo. Logos persist in the Docker data volume. The plain company wordmark is used until your logo is uploaded; the previous fake initial icon is gone.
+
+If the admin password from .env is rejected, Docker Compose may have interpolated a $ character or the running container may have retained an older environment value. A secure interactive reset is now available and stores a salted scrypt hash in the persistent volume. The new hash supersedes the legacy ADMIN_PASSWORD environment value.
+
+    cd /opt/kitchensprayexpert
+    git pull --ff-only
+    docker compose up -d --build
+    docker compose exec web node scripts/admin-status.js
+    docker compose exec -it web node scripts/reset-admin-password.js
+
+Enter and confirm a new password at the masked prompts. The new password takes effect immediately and existing sessions are invalidated. Do not copy passwords into terminal command-line arguments or logs. SESSION_SECRET must still be populated in .env. You do not need to change ADMIN_PASSWORD in .env after using this tool; the stored hash takes precedence.

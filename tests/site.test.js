@@ -36,3 +36,34 @@ test('image metadata is safely escaped', () => {
   assert.ok(!html.includes('<script>alert("hi")</script>'));
   assert.match(html, /&lt;script&gt;/);
 });
+
+test('navigation offers descriptive links and independently aligned arrow controls', () => {
+  const html = render('/', ...opts);
+  assert.match(html, /data-nav-group/);
+  assert.match(html, /id="nav-services"/);
+  assert.match(html, /id="nav-locations"/);
+  assert.match(html, /aria-expanded="false"/);
+  assert.match(html, /Kitchen spraying Ayrshire/);
+  assert.match(html, /An expert makeover for existing cabinetry/);
+  assert.match(html, /class="link-arrow-icon"/);
+  assert.doesNotMatch(html, /class="brand-mark"/);
+  assert.doesNotMatch(html, /KSE\./);
+});
+test('header and footer accept independently uploaded branding, including business logo schema', () => {
+  const html = render('/', [], {}, {headerLogoFile:'logo-abc123.webp',footerLogoFile:'logo-def456.webp'}, false, '');
+  assert.match(html, /src="\/media\/logo-abc123\.webp"/);
+  assert.match(html, /src="\/media\/logo-def456\.webp"/);
+  const schema = JSON.parse(html.match(/<script type="application\/ld\+json">([^<]+)<\/script>/)[1]);
+  const business = schema['@graph'].find(item => item['@type'] === 'HomeAndConstructionBusiness');
+  assert.equal(business.logo.url, 'https://kitchensprayexpert.co.uk/media/logo-abc123.webp');
+});
+test('interior pages use kitchen photography and retain clear hero copy', () => {
+  const galleryPhoto={id:'1',file:'test.webp',alt:'Freshly resprayed kitchen cabinet',category:'project',createdAt:'2026-10-18'};
+  for (const slug of slugs.filter(slug => slug !== '/')) {
+    const html = render(slug, [galleryPhoto], {}, {}, true, '');
+    assert.match(html, /class="page-banner-visual"/);
+    assert.match(html, /src="\/media\/test\.webp"/);
+    assert.match(html, /class="page-banner-actions"/);
+  }
+  assert.match(render('/contact/', [], {}, {}, true,''), /id="quote-form"/);
+});
