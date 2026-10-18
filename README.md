@@ -83,3 +83,7 @@ Required admin values: ADMIN_PASSWORD (strong, unique); SESSION_SECRET (paste th
 - Consider locking down /admin/ in Plesk or Cloudflare Access and enabling Turnstile for enquiries.
 
 The media importer uses the OLD SITE as its source. Complete media migration **before** changing the public DNS or Plesk site mapping. The temporary test site is noindex by default.
+
+### Search Console verification
+
+In admin → Website content, enter your Google HTML verification filename (for example google123abc.html), save, then Google can fetch the expected verification content at the corresponding URL. This does not replace DNS verification, which may be preferable for the entire domain.

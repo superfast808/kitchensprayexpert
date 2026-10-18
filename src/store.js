@@ -54,8 +54,12 @@ export function removeMedia(id) {
   return true;
 }
 export function saveSettings(newSettings) {
-  const allowed = ['heroTitle','heroSubtitle','announcement','googleVerification'];
+  const allowed = ['heroTitle','heroSubtitle','announcement'];
   for (const key of allowed) if (typeof newSettings[key] === 'string') db.settings[key] = newSettings[key].trim().slice(0, 500);
+  if (newSettings.googleVerification !== undefined) {
+    const filename = String(newSettings.googleVerification || '').trim();
+    db.settings.googleVerification = /^google[a-zA-Z0-9_-]+\.html$/.test(filename) ? filename : '';
+  }
   persist();
 }
 
