@@ -70,3 +70,27 @@ export function deleteLead(id) {
   persist();
   return true;
 }
+
+const logoKeys = { header: 'headerLogoFile', footer: 'footerLogoFile' };
+export function saveLogoFile(which, filename) {
+  const key = logoKeys[which];
+  if (!key || !/^logo-[a-f0-9-]+\.webp$/.test(filename)) throw new Error('Invalid logo');
+  const previous = db.settings[key];
+  db.settings[key] = filename;
+  try { persist(); }
+  catch (error) { db.settings[key] = previous; throw error; }
+  if (previous && previous !== filename && /^logo-[a-f0-9-]+\.webp$/.test(previous)) {
+    try { fs.unlinkSync(path.join(uploadsDir, previous)); } catch {}
+  }
+}
+export function deleteLogoFile(which) {
+  const key = logoKeys[which];
+  if (!key) throw new Error('Invalid logo placement');
+  const previous = db.settings[key];
+  delete db.settings[key];
+  try { persist(); }
+  catch (error) { db.settings[key] = previous; throw error; }
+  if (previous && /^logo-[a-f0-9-]+\.webp$/.test(previous)) {
+    try { fs.unlinkSync(path.join(uploadsDir, previous)); } catch {}
+  }
+}
