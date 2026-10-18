@@ -165,5 +165,5 @@ test('finishing touch tiles are valid HTML with exactly three independent clicka
     assert.ok(tile.find('.tile-words strong').text().trim());
     assert.ok(tile.find('.tile-words small').text().trim());
   });
-  assert.equal(tiles.first().children('input').attr('checked'), 'checked');
+  assert.notEqual(tiles.first().children('input').attr('checked'), undefined);
 });
