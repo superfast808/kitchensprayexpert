@@ -44,3 +44,32 @@ document.addEventListener('click', event => {
 window.addEventListener('resize', () => {
   if (window.innerWidth > 1100) closeNav();
 });
+
+
+// RAL colour inspiration: select a shade, explore families, carry the code into a quote.
+for (const board of document.querySelectorAll('[data-ral-board]')) {
+  const swatches=[...board.querySelectorAll('[data-ral-shade]')];
+  const filters=[...board.querySelectorAll('[data-ral-filter]')];
+  const code=board.querySelector('[data-ral-code]');
+  const name=board.querySelector('[data-ral-name]');
+  const link=board.querySelector('[data-ral-link]');
+  function selectShade(tile) {
+    if(!tile)return;
+    for (const swatch of swatches)swatch.setAttribute('aria-pressed',String(swatch===tile));
+    board.style.setProperty('--ral-preview',tile.dataset.ralColour);
+    if(code)code.textContent=tile.dataset.ralShade;
+    if(name)name.textContent=tile.dataset.ralName;
+    if(link)link.href='/contact/?ral='+encodeURIComponent(tile.dataset.ralShade)+'#quote-form';
+  }
+  for(const swatch of swatches)swatch.addEventListener('click',()=>selectShade(swatch));
+  for(const filter of filters){
+    filter.addEventListener('click',()=>{
+      for(const button of filters)button.setAttribute('aria-pressed',String(button===filter));
+      const group=filter.dataset.ralFilter;
+      for(const swatch of swatches)swatch.hidden=group!=='All colours' && swatch.dataset.ralGroup!==group;
+      if(swatches.find(x=>x.getAttribute('aria-pressed')==='true')?.hidden){
+        selectShade(swatches.find(x=>!x.hidden));
+      }
+    });
+  }
+}
