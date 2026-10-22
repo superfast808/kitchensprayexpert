@@ -71,17 +71,21 @@ async function verifyCaptcha(token,ip){
 app.post('/contact/',async(req,res)=>{
   if(limited('contact:'+req.ip,5,3600000))return res.status(429).send('Too many attempts. Please try again later or call '+tel+'.');
   const b=req.body||{};
-  if(b.website)return res.redirect(303,'/contact/?sent=1');
+  const fromHero=b.source==='home-hero';
+  const formRedirect=(parameter,value)=>'/'+(fromHero?'':'contact/')+'?'+parameter+'='+encodeURIComponent(value)+(fromHero?'#hero-enquiry':'');
+  if(b.website)return res.redirect(303,formRedirect('sent','1'));
   const name=String(b.name||'').trim().slice(0,100),phone=String(b.phone||'').trim().slice(0,45);
   const email=String(b.email||'').trim().slice(0,150),postcode=String(b.postcode||'').trim().slice(0,20);
-  const service=String(b.service||'').trim().slice(0,80),message=String(b.message||'').trim().slice(0,3000);
+  const service=String(b.service||'').trim().slice(0,80);
+  const submittedMessage=String(b.message||'').trim().slice(0,3000);
+  const message=fromHero && !submittedMessage ? 'Homepage quick enquiry: please contact me to discuss a kitchen respray.' : submittedMessage;
   const allowedExtras=['handles','worktops','sinks-taps'];
   const requestedExtras=Array.isArray(b.upgrades)?b.upgrades:[b.upgrades];
   const upgrades=[...new Set(requestedExtras.filter(v=>allowedExtras.includes(v)))];
   const ralColour=String(b.ralColour||'').trim().toUpperCase().slice(0,40);
-  if(ralColour && !/^RAL [0-9]{4}$/.test(ralColour))return res.redirect(303,'/contact/?error='+encodeURIComponent('Enter a RAL code like RAL 6011.'));
-  if(!name||!phone||!email||!message||!email.includes('@')||b.consent!=='yes')return res.redirect(303,'/contact/?error='+encodeURIComponent('Required fields are missing.'));
-  if(!await verifyCaptcha(b['cf-turnstile-response'],req.ip))return res.redirect(303,'/contact/?error='+encodeURIComponent('Please complete the verification challenge.'));
+  if(ralColour && !/^RAL [0-9]{4}$/.test(ralColour))return res.redirect(303,formRedirect('error','Enter a RAL code like RAL 6011.'));
+  if(!name||!phone||!email||!message||!email.includes('@')||b.consent!=='yes')return res.redirect(303,formRedirect('error','Required fields are missing.'));
+  if(!await verifyCaptcha(b['cf-turnstile-response'],req.ip))return res.redirect(303,formRedirect('error','Please complete the verification challenge.'));
   try {addLead({name,phone,email,postcode,service,message,upgrades,ralColour});}
   catch(err){console.error('Contact persistence error:',err);return res.status(503).send('We could not save your enquiry. Please call '+tel+'.');}
   if(process.env.SMTP_HOST && process.env.CONTACT_TO && process.env.SMTP_FROM){
@@ -90,7 +94,7 @@ app.post('/contact/',async(req,res)=>{
       await transport.sendMail({from:process.env.SMTP_FROM,to:process.env.CONTACT_TO,replyTo:email,subject:'New kitchen spraying enquiry — '+name,text:['New kitchen spraying enquiry','Name: '+name,'Phone: '+phone,'Email: '+email,'Postcode: '+postcode,'Service: '+service,'Optional extras: '+(upgrades.join(', ')||'None requested'),'Preferred RAL colour: '+(ralColour||'Not specified'),'','Message:',message].join('\n')});
     }catch(err){console.error('SMTP delivery failed; enquiry is safely stored in admin:',err.message);}
   }
-  return res.redirect(303,'/contact/?sent=1');
+  return res.redirect(303,formRedirect('sent','1'));
 });
 const cookieName='kse_admin';
 function sig(data){return crypto.createHmac('sha256',secret).update(data).digest('hex');}
