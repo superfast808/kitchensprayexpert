@@ -141,7 +141,7 @@ function heroMiniForm(query={},siteKey='') {
     '<label>Kitchen details <span class="hero-quick-optional">(optional)</span><textarea name="message" rows="2" maxlength="3000" placeholder="e.g. 12 doors, looking for a fresh colour"></textarea></label>'+
     '<input class="trap" tabindex="-1" name="website" autocomplete="off" aria-hidden="true">'+
     '<label class="hero-quick-consent"><input type="checkbox" name="consent" value="yes" required><span>I agree to be contacted about my enquiry. <a href="/privacy/">Privacy notice</a>.</span></label>'+
-    (siteKey?'<div class="cf-turnstile" data-sitekey="'+e(siteKey)+'"></div>':'')+
+    (siteKey?'<div class="cf-turnstile" data-size="compact" data-sitekey="'+e(siteKey)+'"></div>':'')+
     '<button class="btn btn-primary hero-quick-submit" type="submit">Request my free quote <span aria-hidden="true">↗</span></button>'+
     '</form><a class="hero-quick-secondary" href="/contact/">Prefer a detailed enquiry? ↗</a></aside>';
 }
