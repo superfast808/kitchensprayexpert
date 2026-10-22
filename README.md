@@ -138,3 +138,8 @@ The enquiry form accepts any combination of these optional extras. Selection is 
 ## Google Business Profile structured data
 
 The site includes an exact `sameAs` and `hasMap` link for Kitchen Spraying Expert's Google Business Profile at **14 North Avenue, Clydebank G81 2QP**, using Google Place ID `ChIJR2WVf9NPiEgRr7OCATM9DlI`. This is the kitchen-spraying business listing (not the separate King Specialist Coatings listing). The schema address includes Unit 6, Dunrobin Court, 14 North Avenue, Clydebank, G81 2QP. Verify business details against the managed profile whenever they change. The quote form's RAL field now shows an illustrative matching colour swatch, and the optional-extras subtitle is constrained to the form width.
+
+
+## Homepage hero quick enquiry
+
+The homepage hero includes a compact quote form layered over the photo on desktop and placed below the introductory copy on mobile. It asks for name, phone, email and optional kitchen details, plus required contact consent. The form posts to /contact/ with source=home-hero. When the optional message is left blank, the backend stores an explicit request to contact the customer. The existing honeypot, rate limiting and optional compact Cloudflare Turnstile apply. Enquiries are persisted to the admin and sent via the configured SMTP channel. They are marked Quick enquiry in admin, with a distinct notification subject. On success or validation failure, the server redirects back to the homepage and scrolls to the hero form. The full contact form remains available.

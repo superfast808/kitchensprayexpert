@@ -301,3 +301,40 @@ test('location pages include localised guidance without fabricated project claim
     pageDescriptions.add(meta);
   }
 });
+
+
+test('homepage hero has a small functional contact form rather than a decorative CTA', () => {
+  const $=load(render('/', [], {}, {}, true, ''));
+  const form=$('.editorial-hero form.hero-quick-form');
+  assert.equal(form.length,1);
+  assert.equal(form.attr('method'),'post');
+  assert.equal(form.attr('action'),'/contact/');
+  assert.equal(form.find('input[name="source"]').val(),'home-hero');
+  assert.equal(form.find('input[name="service"]').val(),'Kitchen respray');
+  for (const field of ['name','phone','email','consent']) {
+    const input=form.find('[name="'+field+'"]');
+    assert.equal(input.length,1,'Hero form has '+field);
+    assert.notEqual(input.attr('required'),undefined,'Required '+field);
+  }
+  assert.equal(form.find('textarea[name="message"]').length,1);
+  assert.equal($('.editorial-hero h1').length,1,'A single main hero H1');
+  assert.equal(form.find('.trap').length,1,'Anti-spam honeypot is preserved');
+});
+test('hero form uses Turnstile when enabled and presents accessible feedback', () => {
+  const secured=render('/', [], {}, {}, true, 'turnstile-example-key');
+  const $=load(secured);
+  assert.equal($('.hero-quick-form .cf-turnstile').attr('data-sitekey'),'turnstile-example-key');
+  assert.equal($('.hero-quick-form .cf-turnstile').attr('data-size'),'compact');
+  assert.match(secured,/https:\/\/challenges\.cloudflare\.com\/turnstile\/v0\/api\.js/);
+  const success=load(render('/', [], {sent:'1'}, {}, true, ''));
+  assert.equal(success('.hero-quick-form').length,0);
+  assert.match(success('#hero-enquiry').text(),/Enquiry received/);
+  const error=load(render('/', [], {error:'Verification required'}, {}, true, ''));
+  assert.equal(error('#hero-enquiry [role="alert"]').text(),'Verification required');
+});
+test('compact hero form remains inside the homepage hero at desktop and mobile widths', () => {
+  const styles=fs.readFileSync(new URL('../public/site.css', import.meta.url),'utf8');
+  assert.match(styles,/\.editorial-hero \.hero-content > \.hero-quick-card\s*\{\s*position:absolute;/);
+  assert.match(styles,/@media\(max-width:1100px\)\s*\{[\s\S]*?\.hero\.editorial-hero:has\(\.hero-quick-card\) \.hero-content\s*\{\s*flex-direction:column;/);
+  assert.match(styles,/\.hero-quick-row\s*\{\s*grid-template-columns:1fr;/);
+});
