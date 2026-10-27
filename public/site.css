@@ -810,3 +810,224 @@
   .hero-quick-row{grid-template-columns:1fr;gap:11px}
   .hero-quick-form input:not([type=checkbox]):not(.trap){min-height:43px}
 }
+
+
+/* 27 Oct: hero quote card – quiet, rounded and deliberately compact.
+   Turnstile remains functional: Cloudflare controls when its own challenge is visible. */
+.hero.editorial-hero:has(.hero-quick-card){isolation:isolate}
+.hero.editorial-hero .hero-quick-card{
+  border-radius:24px;
+  border:1px solid rgba(224,226,214,.98);
+  background:#fffdf8;
+  padding:25px 26px 21px;
+  box-shadow:0 26px 66px rgba(19,35,24,.20),0 3px 12px rgba(19,35,24,.08);
+}
+.hero-quick-heading{
+  margin:0 0 20px;
+  padding:0 0 17px;
+  border-bottom:1px solid #e8e9df;
+}
+.hero-quick-card .hero-quick-kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:10px;
+  margin:0 0 10px;
+  color:#905764;
+  letter-spacing:.095em;
+}
+.hero-quick-accent{
+  display:block;
+  width:7px;
+  height:7px;
+  background:#9c6571;
+  border-radius:50%;
+  flex:none;
+}
+.hero-quick-card h2{
+  font-size:clamp(22px,2vw,27px);
+  font-weight:800;
+  line-height:1.16;
+  letter-spacing:-.042em;
+  margin:0 0 8px;
+  color:#263b2c;
+}
+.hero-quick-card p.hero-quick-intro,
+.hero-quick-success>p{
+  color:#6a7769;
+  font-size:12px;
+  line-height:1.5;
+  margin:0;
+}
+.hero-quick-form{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.hero-quick-form label{
+  gap:5px;
+  font-size:11px;
+  font-weight:800;
+  color:#354b39;
+}
+.hero-quick-form :is(input:not([type="checkbox"]):not(.trap), textarea){
+  height:auto;
+  min-height:42px;
+  border-radius:10px;
+  border:1px solid #d5ddd2;
+  background:#fff;
+  color:#263b2d;
+  padding:10px 12px;
+  font-size:12px;
+  font-weight:500;
+  box-shadow:0 1px 1px rgba(14,45,21,.015);
+}
+.hero-quick-form :is(input,textarea)::placeholder{color:#94a095;opacity:1}
+.hero-quick-form :is(input,textarea):focus-visible{
+  outline:2px solid #aa7d87;
+  border-color:#aa7d87;
+  outline-offset:1px;
+}
+.hero-quick-form .hero-quick-row{gap:11px}
+.hero-quick-details{
+  border:1px solid #e1e4d9;
+  background:#f8f9f5;
+  border-radius:11px;
+  overflow:hidden;
+}
+.hero-quick-details > summary{
+  list-style:none;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:12px 13px;
+  color:#3d5944;
+  font-size:12px;
+  font-weight:800;
+  line-height:1.35;
+  cursor:pointer;
+}
+.hero-quick-details > summary::-webkit-details-marker{display:none}
+.hero-quick-details > summary:focus-visible{
+  outline:2px solid #aa7d87;
+  outline-offset:-3px;
+  border-radius:11px;
+}
+.hero-quick-details[open] > summary{border-bottom:1px solid #e1e4d9}
+.hero-quick-details .hero-quick-optional{
+  display:inline-flex;
+  flex:none;
+  align-items:center;
+  gap:9px;
+  color:#798779;
+  font-size:10px;
+  font-weight:600;
+}
+.hero-quick-expand{
+  display:grid;
+  place-items:center;
+  font-size:18px;
+  font-weight:400;
+  color:#925c67;
+  line-height:1;
+  width:18px;
+  height:18px;
+  border:1px solid #d9c8c8;
+  border-radius:50%;
+}
+.hero-quick-details[open] .hero-quick-expand{transform:rotate(45deg)}
+.hero-quick-details .hero-quick-details-label{padding:12px 13px 14px}
+.hero-quick-details textarea{min-height:67px;max-height:170px}
+.hero-quick-form label.hero-quick-consent{
+  display:flex;
+  flex-direction:row;
+  align-items:flex-start;
+  gap:9px;
+  font-weight:500;
+  color:#5d6d5f;
+  font-size:10.5px;
+  line-height:1.5;
+  margin:1px 0 0;
+}
+.hero-quick-consent input[type="checkbox"]{
+  min-width:16px;
+  width:16px;
+  min-height:16px;
+  height:16px;
+  margin:0;
+  accent-color:#895461;
+}
+.hero-quick-security{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px 11px;
+  min-height:18px;
+}
+.hero-quick-security-label{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  font-size:10px;
+  font-weight:650;
+  letter-spacing:.01em;
+  color:#7b887b;
+}
+.hero-quick-security-label svg{color:#67816c}
+.hero-quick-form .cf-turnstile{
+  margin:0;
+  min-width:0;
+  max-width:100%;
+  /* Do not size, crop, hide or position the challenge iframe itself. */
+}
+.hero-quick-form button.hero-quick-submit{
+  border-radius:12px;
+  min-height:46px;
+  padding:12px 16px;
+  font-size:12px;
+  letter-spacing:.01em;
+  box-shadow:0 3px 0 rgba(65,70,28,.09);
+}
+.hero-quick-form button.hero-quick-submit:hover{box-shadow:0 5px 14px rgba(113,92,53,.16)}
+.hero-quick-card > a.hero-quick-secondary{
+  display:block;
+  margin:13px auto 0;
+  width:fit-content;
+  text-align:center;
+  font-size:10.5px;
+  text-decoration:none;
+  border-bottom:1px solid #ccd5c6;
+}
+.hero-quick-card > a.hero-quick-secondary:hover{border-bottom-color:#87515c}
+.hero.editorial-hero .hero-quick-success{
+  min-height:0;
+  padding:34px 27px;
+  border-radius:24px;
+}
+.hero-quick-success .hero-quick-secondary{margin-top:19px}
+@media (min-width:1101px){
+  .hero.editorial-hero:has(.hero-quick-card){min-height:670px}
+  .editorial-hero .hero-content:has(.hero-quick-card){
+    min-height:670px;
+    padding-top:40px;
+    padding-bottom:40px;
+  }
+  .editorial-hero .hero-content > .hero-quick-card{
+    width:min(410px,39%);
+  }
+}
+@media (max-width:1100px){
+  .hero.editorial-hero .hero-content > .hero-quick-card{
+    border-radius:22px;
+    max-width:500px;
+  }
+}
+@media (max-width:600px){
+  .hero.editorial-hero .hero-quick-card{padding:22px 19px 19px;border-radius:19px}
+  .hero-quick-heading{margin-bottom:18px;padding-bottom:14px}
+  .hero-quick-card h2{font-size:25px}
+  .hero-quick-form .hero-quick-row{grid-template-columns:1fr;gap:12px}
+  .hero-quick-form :is(input:not([type="checkbox"]):not(.trap),textarea){min-height:43px}
+}
