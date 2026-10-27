@@ -338,3 +338,36 @@ test('compact hero form remains inside the homepage hero at desktop and mobile w
   assert.match(styles,/@media\(max-width:1100px\)\s*\{[\s\S]*?\.hero\.editorial-hero:has\(\.hero-quick-card\) \.hero-content\s*\{\s*flex-direction:column;/);
   assert.match(styles,/\.hero-quick-row\s*\{\s*grid-template-columns:1fr;/);
 });
+
+
+test('hero enquiry uses compact progressive disclosure and does not reserve a tall Turnstile box', () => {
+  const html=render('/', [], {}, {}, true, 'turnstile-example-key');
+  const $=load(html);
+  const form=$('.hero-quick-form');
+  assert.equal(form.length,1);
+  assert.equal(form.find('.hero-quick-details').length,1);
+  assert.equal(form.find('details.hero-quick-details').attr('open'),undefined);
+  assert.equal(form.find('details summary').text().includes('Add a few kitchen details'),true);
+  assert.equal(form.find('details textarea[name="message"]').length,1);
+  assert.equal(form.find('input[name="name"][required]').length,1);
+  assert.equal(form.find('input[name="phone"][required]').length,1);
+  assert.equal(form.find('input[name="email"][required]').length,1);
+  assert.equal(form.find('input[name="consent"][required]').length,1);
+  assert.equal(form.find('.cf-turnstile').attr('data-size'),'compact');
+  assert.equal(form.find('.cf-turnstile').attr('data-appearance'),'interaction-only');
+  assert.equal(form.find('.hero-quick-security-label').text().trim(),'Secure verification');
+});
+test('hero card visual polish leaves verification accessible and form routing unchanged', () => {
+  const html=render('/', [], {}, {}, true, '');
+  const $=load(html);
+  assert.equal($('#hero-enquiry.hero-quick-card').length,1);
+  assert.equal($('.hero-quick-form input[name="source"]').val(),'home-hero');
+  assert.equal($('.hero-quick-form input[name="service"]').val(),'Kitchen respray');
+  assert.equal($('.hero-quick-form .cf-turnstile').length,0,'Turnstile only loads if key configured');
+  const styles=fs.readFileSync(new URL('../public/site.css', import.meta.url),'utf8');
+  assert.match(styles,/\.hero\.editorial-hero \.hero-quick-card\s*\{\s*border-radius:24px;/);
+  assert.match(styles,/\.hero-quick-details\s*\{[\s\S]*?border-radius:11px;/);
+  assert.match(styles,/\.hero-quick-form input\[type="hidden"\],[\s\S]*?display:none!important;/);
+  assert.doesNotMatch(styles,/\.hero-quick-form \.cf-turnstile\s*\{[^}]*display:none/i);
+  assert.doesNotMatch(styles,/\.hero-quick-form \.cf-turnstile\s*\{[^}]*overflow:hidden/i);
+});
