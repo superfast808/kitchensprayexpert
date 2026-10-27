@@ -1031,3 +1031,10 @@
   .hero-quick-form .hero-quick-row{grid-template-columns:1fr;gap:12px}
   .hero-quick-form :is(input:not([type="checkbox"]):not(.trap),textarea){min-height:43px}
 }
+
+
+/* Hidden routing/anti-spam inputs must remain non-rendering despite generic input styles. */
+.hero-quick-form input[type="hidden"],
+.hero-quick-form input.trap{
+  display:none!important;
+}
