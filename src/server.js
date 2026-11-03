@@ -49,6 +49,9 @@ app.get(/^\/google[a-zA-Z0-9_-]+\.html$/, (req,res)=>{
 app.get('/blog-item/how-much-does-a-kitchen-respray-cost-in-scotland', (req,res)=>res.redirect(301,'/kitchen-respray-cost/'));
 app.get('/blog-item/how-much-does-a-kitchen-respray-cost-in-scotland/', (req,res)=>res.redirect(301,'/kitchen-respray-cost/'));
 app.get(['/prices/','/pricing/'],(req,res)=>res.redirect(301,'/kitchen-respray-cost/'));
+app.get(['/why-choose-us','/why-choose-us/'],(req,res)=>res.redirect(301,'/about/'));
+app.get(['/quote','/quote/','/get-a-quote','/get-a-quote/'],(req,res)=>res.redirect(301,'/contact/'));
+
 app.get('/contact-us/',(req,res)=>res.redirect(301,'/contact/'));
 const limiters=new Map();
 function limited(key, max, windowMs) {
