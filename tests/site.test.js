@@ -250,6 +250,36 @@ test('every public page has exactly one useful H1 inside the main content', () =
   }
 });
 
+test('pricing content answers Search Console cost queries with published prices', () => {
+  const $ = load(render('/kitchen-respray-cost/', [], {}, {}, false, ''));
+  assert.match($('main h1').first().text(), /how much does a kitchen respray cost in Scotland/i);
+  for (const price of ['£1,300', '£1,950', '£2,350']) {
+    assert.ok($('main').text().includes(price), 'Published starting price '+price);
+  }
+  const text = $('main').text();
+  assert.match(text, /what is included in a kitchen respray price/i);
+  assert.match(text, /How to get a kitchen respray price for your home/i);
+  assert.match(text, /optional extras/i);
+  assert.match(text, /postcod/i);
+  for (const path of ['/kitchen-door-spraying/', '/kitchen-cabinet-spraying/', '/kitchen-spraying-glasgow/', '/kitchen-spraying-ayrshire/', '/contact/']) {
+    assert.ok($('main a[href="'+path+'"]').length, 'Relevant internal link: '+path);
+  }
+  const graph = JSON.parse($('script[type="application/ld+json"]').html())['@graph'];
+  const faq = graph.find(item => item['@type'] === 'FAQPage');
+  assert.ok(faq && faq.mainEntity.length === 5, 'Unique cost FAQs in structured data');
+  for (const question of faq.mainEntity) {
+    assert.ok($('.faq-list summary').toArray().some(el => $(el).text().includes(question.name)), 'Structured answer matches visible question: '+question.name);
+  }
+});
+
+test('homepage connects commercial cabinet, door and price searches to relevant pages', () => {
+  const $ = load(render('/', [], {}, {}, false, ''));
+  assert.match($('main').text(), /Looking for kitchen cabinet spraying near you/i);
+  for (const path of ['/kitchen-cabinet-spraying/', '/kitchen-door-spraying/', '/kitchen-respray-cost/']) {
+    assert.ok($('main a[href="'+path+'"]').length, 'Service journey available: '+path);
+  }
+});
+
 test('homepage SEO H1 remains stable when the marketing tagline is edited', () => {
   for (const heroTitle of ['', 'A fresh look for the heart of your home.', 'A completely bespoke tagline']) {
     const $ = load(render('/', [], {}, {heroTitle}, false, ''));
